@@ -1,5 +1,9 @@
 package jvd.ir.mvvm_tutorial.ui;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -7,17 +11,20 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 
 import jvd.ir.mvvm_tutorial.models.LocationModel;
+import jvd.ir.mvvm_tutorial.models.UserModel;
 import jvd.ir.mvvm_tutorial.repo.MainRepository;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainViewModel extends ViewModel {
+public class MainViewModel extends AndroidViewModel {
 
     private MainRepository repository;
 
-    public MainViewModel(){
-        repository = new MainRepository();
+    public MainViewModel(@NonNull Application application) {
+        super(application);
+        repository = new MainRepository(application);
+
     }
 
     public LiveData<List<LocationModel>> getLocation(Boolean farsi){
@@ -36,5 +43,12 @@ public class MainViewModel extends ViewModel {
         });
 
         return mutableLiveData;
+    }
+
+    public LiveData<List<UserModel>> getUsers(){
+        MutableLiveData<List<UserModel>> liveData = new MutableLiveData<List<UserModel>>();
+
+        liveData.setValue(repository.getUsers());
+        return liveData;
     }
 }

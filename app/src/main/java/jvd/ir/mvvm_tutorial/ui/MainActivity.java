@@ -11,6 +11,7 @@ import java.util.List;
 
 import jvd.ir.mvvm_tutorial.models.LocationModel;
 import jvd.ir.mvvm_tutorial.R;
+import jvd.ir.mvvm_tutorial.models.UserModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +25,18 @@ public class MainActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         getLocation();
+
+        getUsers();
+    }
+
+    private void getUsers() {
+
+        viewModel.getUsers().observe(this, new Observer<List<UserModel>>() {
+            @Override
+            public void onChanged(List<UserModel> userModels) {
+                Log.i("LOG10", "onChanged: ");
+            }
+        });
     }
 
     private void getLocation() {
